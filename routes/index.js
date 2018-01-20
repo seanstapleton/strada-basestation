@@ -16,7 +16,8 @@ Estimote.discoverAll(function(estimote) {
 			console.log('found: ' + estimote.toString());
       var data = querystring.stringify({
 	      'id_': estimote.uuid,
-	      'beaconID': 'demo_desk_0'
+	      'beaconID': 'demo_desk_0',
+        'timestamp': new Date().getTime()
       });
       var post_options = {
 	      host: 'strada-traffic.herokuapp.com',
