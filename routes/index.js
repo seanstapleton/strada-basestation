@@ -1,8 +1,31 @@
 var express = require('express');
 var router = express.Router();
-var noble = require('noble');
+var async = require('async');
+var Estimote = require('bleacon').Estimote;
 
-noble.state = "poweredOn";
-noble.startScanning();
+var async = require('async');
+
+var Estimote = require('./estimote.js');
+
+Estimote.discover(function(estimote) {
+  async.series([
+    function(callback) {
+      estimote.on('disconnect', function() {
+        console.log('disconnected!');
+        process.exit(0);
+      });
+
+      estimote.on('motionStateChange', function(isMoving) {
+        console.log('\tmotion state change: isMoving = ' + isMoving);
+      });
+
+      console.log('found: ' + estimote.toString());
+
+      console.log('connectAndSetUp');
+      estimote.connectAndSetUp(callback);
+    }
+  ]);
+});
+
 
 module.exports = router;
